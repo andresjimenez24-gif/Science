@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Science Practice – Grade 5 Term III</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FBFCFE; --grid:#DCE6F2; --ink:#1F3A93; --ink-soft:#4A5E9E; --pen:#C8303A;
+  --pencil:#5B6573; --card:#FFFFFF; --line:#C3CFE3; --hl:#FFE45C; --hl-ink:#1F2A44;
+  --ok:#1E8A5A; --ok-bg:#E3F4EC; --bad-bg:#FBE6E7; --btn-ink:#FFFFFF;
+  color-scheme: light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#141D2B; --grid:#1F2C40; --ink:#A9C1FF; --ink-soft:#8EA3D6; --pen:#FF8088;
+    --pencil:#A3ADBD; --card:#1B2638; --line:#33445F; --hl:#5E5320; --hl-ink:#FFF4C2;
+    --ok:#5BD69B; --ok-bg:#183428; --bad-bg:#3A1E24; --btn-ink:#0F1726;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#141D2B; --grid:#1F2C40; --ink:#A9C1FF; --ink-soft:#8EA3D6; --pen:#FF8088;
+  --pencil:#A3ADBD; --card:#1B2638; --line:#33445F; --hl:#5E5320; --hl-ink:#FFF4C2;
+  --ok:#5BD69B; --ok-bg:#183428; --bad-bg:#3A1E24; --btn-ink:#0F1726;
+  color-scheme: dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{
+  margin:0; min-height:100%;
+  background-color:var(--paper);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size:24px 24px;
+  color:var(--ink);
+  font-family:"Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size:18px; line-height:1.5;
+}
+main{max-width:560px; margin:0 auto; padding:16px 16px 40px}
+h1,h2,.hand{font-family:"Kalam","Comic Sans MS","Chalkboard SE",cursive; color:var(--pen); font-weight:700; line-height:1.15}
+h1{font-size:2.3rem; margin:12px 0 4px}
+h2{font-size:1.5rem; margin:0 0 8px}
+p{margin:0 0 12px}
+.muted{color:var(--pencil)}
+button,input,select{font:inherit}
+.btn{
+  appearance:none; border:none; border-radius:10px; padding:14px 20px; min-height:52px;
+  background:var(--ink); color:var(--btn-ink); font-weight:700; cursor:pointer; font-size:1.05rem;
+}
+.btn.ghost{background:transparent; color:var(--ink); border:2px solid var(--line)}
+.btn:disabled{opacity:.45; cursor:default}
+.btn:focus-visible,.opt:focus-within,select:focus-visible,input:focus-visible,.chip:focus-visible{outline:3px solid var(--pen); outline-offset:2px}
+.field{width:100%; padding:14px; border-radius:10px; border:2px solid var(--line); background:var(--card); color:var(--ink); font-size:1.1rem}
+.sheet{background:var(--card); border:2px solid var(--line); border-radius:14px; padding:18px; margin-top:14px}
+.topbar{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:8px}
+.qnum{font-family:"Kalam",cursive; font-size:1.35rem; color:var(--pen); font-weight:700}
+.topic{font-size:.85rem; color:var(--pencil); border:1.5px solid var(--line); border-radius:999px; padding:2px 10px; background:var(--card)}
+.progress{height:8px; background:var(--grid); border-radius:999px; overflow:hidden}
+.progress span{display:block; height:100%; background:var(--ink); transition:width .25s}
+.prompt{font-size:1.15rem; margin:4px 0 12px}
+.marks{font-size:.85rem; color:var(--pencil)}
+.fig{color:var(--ink); margin:6px 0 14px; display:flex; justify-content:center}
+.fig svg{width:100%; max-width:340px; height:auto}
+.opts{display:grid; gap:10px}
+.opt{display:flex; gap:12px; align-items:flex-start; padding:14px; border:2px solid var(--line); border-radius:12px; background:var(--card); cursor:pointer}
+.opt input{position:absolute; opacity:0; pointer-events:none}
+.opt .box{flex:0 0 24px; height:24px; border:2px solid var(--ink-soft); border-radius:50%; margin-top:2px; display:grid; place-items:center}
+.opt.multi .box{border-radius:6px}
+.opt.sel{background:var(--hl); border-color:var(--ink); color:var(--hl-ink)}
+.opt.sel .box{border-color:var(--hl-ink); background:var(--hl-ink)}
+.opt.sel .box::after{content:""; width:8px; height:8px; border-radius:50%; background:var(--hl)}
+.opt.multi.sel .box::after{border-radius:2px}
+.row{display:grid; grid-template-columns:1fr; gap:6px; padding:10px 0; border-bottom:1.5px dashed var(--line)}
+.row:last-child{border-bottom:none}
+.row label{font-weight:700}
+select.field{padding:12px}
+.pool{display:flex; flex-wrap:wrap; gap:8px; margin:6px 0 14px}
+.chip{border:2px solid var(--line); background:var(--card); color:var(--ink); border-radius:999px; padding:10px 14px; min-height:44px; cursor:pointer; font-weight:700}
+.seq{display:grid; gap:6px; margin-bottom:6px}
+.slot{display:flex; align-items:center; gap:10px; min-height:44px; padding:6px 12px; border:2px dashed var(--line); border-radius:10px; background:var(--card)}
+.slot b{font-family:"Kalam",cursive; color:var(--pen); width:1.4em}
+.slot button{flex:1; text-align:left; background:var(--hl); color:var(--hl-ink); border:none; border-radius:8px; padding:6px 10px; font-weight:700; cursor:pointer}
+.nav{display:flex; gap:10px; margin-top:18px}
+.nav .btn{flex:1}
+.linkbtn{background:none; border:none; color:var(--ink-soft); text-decoration:underline; padding:10px 0; cursor:pointer; font-size:.95rem}
+.dots{display:grid; grid-template-columns:repeat(auto-fill,minmax(44px,1fr)); gap:8px; margin:12px 0}
+.dot{min-height:44px; border-radius:10px; border:2px solid var(--line); background:var(--card); color:var(--ink); font-weight:700; cursor:pointer}
+.dot.done{background:var(--ink); color:var(--btn-ink); border-color:var(--ink)}
+.dot.here{outline:3px solid var(--pen); outline-offset:1px}
+.score{font-family:"Kalam",cursive; font-size:4.2rem; color:var(--pen); line-height:1; margin:8px 0}
+.ladder{list-style:none; padding:0; margin:14px 0; display:grid; gap:8px}
+.ladder li{padding:10px 14px; border-radius:10px; border:2px solid var(--line); background:var(--card); color:var(--pencil)}
+.ladder li.on{background:var(--hl); color:var(--hl-ink); border-color:var(--ink); font-weight:700}
+.rev{border:2px solid var(--line); border-radius:12px; background:var(--card); padding:14px; margin-top:12px}
+.rev.ok{border-left:8px solid var(--ok)}
+.rev.miss{border-left:8px solid var(--pen)}
+.rev .head{display:flex; justify-content:space-between; gap:10px; font-size:.9rem; color:var(--pencil)}
+.rev .got{font-weight:700}
+.rev .ans{margin:6px 0 0}
+.rev .yours{background:var(--bad-bg); padding:6px 10px; border-radius:8px; margin-top:8px}
+.rev.ok .yours{background:var(--ok-bg)}
+.rev .right{background:var(--ok-bg); padding:6px 10px; border-radius:8px; margin-top:6px}
+.rev .why{color:var(--pencil); font-size:.95rem; margin-top:8px}
+.modal{position:fixed; inset:0; background:rgba(10,15,30,.55); display:flex; align-items:flex-end; justify-content:center; z-index:20; padding:16px; padding-bottom:calc(16px + env(safe-area-inset-bottom,0px))}
+.modal .sheet{width:100%; max-width:560px; max-height:80vh; overflow:auto}
+.hidden{display:none !important}
+@media (prefers-reduced-motion: reduce){ .progress span{transition:none} }
+</style>
+</head>
+<body>
+<main id="app"></main>
+
+<script>
+const ah = (id) => `<defs><marker id="${id}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>`;
+const lamp = (x,y)=>`<circle cx="${x}" cy="${y}" r="14" fill="none"/><line x1="${x-10}" y1="${y-10}" x2="${x+10}" y2="${y+10}"/><line x1="${x-10}" y1="${y+10}" x2="${x+10}" y2="${y-10}"/>`;
+const SVG = {
+mirror:`<svg viewBox="0 0 300 200" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" aria-label="Light ray hitting a mirror with three lines labelled A, B and C">${ah('m1')}
+<line x1="30" y1="160" x2="270" y2="160" stroke-width="5"/>
+${Array.from({length:12},(_,i)=>`<line x1="${40+i*20}" y1="164" x2="${30+i*20}" y2="178" stroke-width="2"/>`).join('')}
+<line x1="150" y1="20" x2="150" y2="160" stroke-dasharray="7 6"/>
+<line x1="50" y1="40" x2="100" y2="100" marker-end="url(#m1)"/><line x1="100" y1="100" x2="150" y2="160"/>
+<line x1="150" y1="160" x2="200" y2="100" marker-end="url(#m1)"/><line x1="200" y1="100" x2="250" y2="40"/>
+<g fill="currentColor" stroke="none" font-size="22" font-family="Kalam, cursive" font-weight="700"><text x="28" y="40">A</text><text x="160" y="36">B</text><text x="258" y="40">C</text><text x="200" y="192" font-size="15">mirror</text></g></svg>`,
+pencil:`<svg viewBox="0 0 300 190" fill="none" stroke-linecap="round" aria-label="A pencil in a glass of water looks bent"><rect x="100" y="94" width="100" height="78" fill="#5B8FE0" opacity=".35"/>
+<path d="M100 30 V172 H200 V30" stroke="currentColor" stroke-width="3"/><line x1="100" y1="94" x2="200" y2="94" stroke="currentColor" stroke-width="2" stroke-dasharray="5 4"/>
+<line x1="60" y1="20" x2="150" y2="94" stroke="#E08A2E" stroke-width="9"/><line x1="150" y1="94" x2="178" y2="160" stroke="#E08A2E" stroke-width="9"/>
+<g fill="currentColor" font-size="15" font-family="Atkinson Hyperlegible, sans-serif"><text x="212" y="70">air</text><text x="212" y="140">water</text></g></svg>`,
+symbols:`<svg viewBox="0 0 320 95" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" aria-label="Four circuit symbols numbered 1 to 4">
+<line x1="8" y1="35" x2="34" y2="35"/><line x1="34" y1="18" x2="34" y2="52"/><line x1="44" y1="26" x2="44" y2="44"/><line x1="44" y1="35" x2="70" y2="35"/>
+<line x1="88" y1="35" x2="106" y2="35"/>${lamp(120,35)}<line x1="134" y1="35" x2="152" y2="35"/>
+<line x1="168" y1="35" x2="184" y2="35"/><circle cx="188" cy="35" r="3.5"/><line x1="191" y1="33" x2="216" y2="17"/><circle cx="222" cy="35" r="3.5"/><line x1="226" y1="35" x2="240" y2="35"/>
+<path d="M266 42 A18 18 0 0 1 302 42 Z"/><line x1="274" y1="42" x2="274" y2="58"/><line x1="294" y1="42" x2="294" y2="58"/>
+<g fill="currentColor" stroke="none" font-size="22" font-family="Kalam, cursive" font-weight="700"><text x="34" y="88">1</text><text x="114" y="88">2</text><text x="198" y="88">3</text><text x="278" y="88">4</text></g></svg>`,
+mike:`<svg viewBox="0 0 300 200" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" aria-label="Series circuit: one cell, two lamps and a closed switch in one loop">
+<line x1="40" y1="40" x2="96" y2="40"/>${lamp(110,40)}<line x1="124" y1="40" x2="176" y2="40"/>${lamp(190,40)}<line x1="204" y1="40" x2="260" y2="40"/>
+<line x1="260" y1="40" x2="260" y2="160"/><line x1="40" y1="40" x2="40" y2="94"/><line x1="22" y1="94" x2="58" y2="94"/><line x1="30" y1="106" x2="50" y2="106"/><line x1="40" y1="106" x2="40" y2="160"/>
+<line x1="40" y1="160" x2="126" y2="160"/><circle cx="130" cy="160" r="3.5"/><line x1="133" y1="160" x2="167" y2="160"/><circle cx="170" cy="160" r="3.5"/><line x1="174" y1="160" x2="260" y2="160"/>
+<g fill="currentColor" stroke="none" font-size="14" font-family="Atkinson Hyperlegible, sans-serif"><text x="62" y="104">cell</text><text x="128" y="184">switch</text></g></svg>`,
+priya:`<svg viewBox="0 0 300 250" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" aria-label="Parallel circuit with lamps A, B and C, switch S1 on the main wire and switch S2 on lamp C's branch">
+<line x1="40" y1="30" x2="96" y2="30"/><circle cx="100" cy="30" r="3.5"/><line x1="103" y1="30" x2="137" y2="30"/><circle cx="140" cy="30" r="3.5"/><line x1="144" y1="30" x2="194" y2="30"/>
+<line x1="194" y1="14" x2="194" y2="46"/><line x1="204" y1="21" x2="204" y2="39"/><line x1="204" y1="30" x2="260" y2="30"/>
+<line x1="40" y1="30" x2="40" y2="210"/><line x1="260" y1="30" x2="260" y2="210"/>
+<line x1="40" y1="90" x2="136" y2="90"/>${lamp(150,90)}<line x1="164" y1="90" x2="260" y2="90"/>
+<line x1="40" y1="150" x2="136" y2="150"/>${lamp(150,150)}<line x1="164" y1="150" x2="260" y2="150"/>
+<line x1="40" y1="210" x2="66" y2="210"/><circle cx="70" cy="210" r="3.5"/><line x1="73" y1="210" x2="103" y2="210"/><circle cx="106" cy="210" r="3.5"/><line x1="110" y1="210" x2="136" y2="210"/>${lamp(150,210)}<line x1="164" y1="210" x2="260" y2="210"/>
+<g fill="currentColor" stroke="none"><circle cx="40" cy="90" r="5"/><circle cx="260" cy="90" r="5"/><circle cx="40" cy="150" r="5"/><circle cx="260" cy="150" r="5"/></g>
+<g fill="currentColor" stroke="none" font-size="20" font-family="Kalam, cursive" font-weight="700"><text x="144" y="72">A</text><text x="144" y="132">B</text><text x="144" y="192">C</text><text x="108" y="20" font-size="16">S1</text><text x="76" y="238" font-size="16">S2</text><text x="212" y="20" font-size="14" font-family="Atkinson Hyperlegible, sans-serif" font-weight="400">cell</text></g></svg>`,
+forces:`<svg viewBox="0 0 300 240" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" aria-label="A box with four arrows: A right, B left, C down, D up">${ah('m2')}
+<rect x="112" y="92" width="76" height="56" rx="3"/>
+<line x1="188" y1="120" x2="270" y2="120" marker-end="url(#m2)"/><line x1="112" y1="120" x2="30" y2="120" marker-end="url(#m2)"/>
+<line x1="150" y1="148" x2="150" y2="222" marker-end="url(#m2)"/><line x1="150" y1="92" x2="150" y2="18" marker-end="url(#m2)"/>
+<g fill="currentColor" stroke="none" font-size="22" font-family="Kalam, cursive" font-weight="700"><text x="250" y="108">A</text><text x="34" y="108">B</text><text x="160" y="220">C</text><text x="160" y="30">D</text><text x="134" y="127" font-size="16">box</text></g></svg>`
+};
+
+const Q = [
+ {id:"q1",t:"Light",type:"mc",p:"Tomás is reading a book. Which of these is a light source?",o:["A lamp","A book","A mirror","The Moon"],m:1},
+ {id:"q2",t:"Light",type:"mc",p:"How does Tomás see the book?",o:["Light from the lamp reflects off the book and enters his eyes.","Light travels from his eyes to the book.","The book makes its own light.","Light travels from the book to the lamp."],m:1},
+ {id:"q3",t:"Light",type:"number",p:"A ray of light hits a plane mirror. The angle of incidence is 40°. What is the angle of reflection?",unit:"degrees (°)",m:1},
+ {id:"q4",t:"Light",type:"match",svg:"mirror",p:"Look at the diagram. Name each line.",items:["Line A","Line B","Line C"],ch:["incident ray","normal","reflected ray"],m:2},
+ {id:"q5",t:"Light",type:"mc",svg:"pencil",p:"Sara puts a pencil in a glass of water. The pencil looks bent. What is this effect called?",o:["Refraction","Reflection","Absorption","A shadow"],m:1},
+ {id:"q6",t:"Light",type:"mc",p:"Why does the pencil look bent?",o:["Light travels at different speeds in water and air, so it changes direction.","The water really bends the pencil.","Water is heavier than air.","Light stops when it enters water."],m:1},
+ {id:"q7",t:"Light",type:"mc",p:"Ana puts a glass of water in front of an arrow drawn on paper. The arrow looks like it points the other way. Did the arrow on the paper really change?",o:["No. The light from the arrow is refracted, so only what we see changes.","Yes. The water turns the drawing around.","No. This happens because of reflection.","Yes. Light travels in curves."],m:1},
+ {id:"q8",t:"Light",type:"mc",p:"Which material absorbs the most light?",o:["Black cloth","A mirror","Clear glass","White paper"],m:1},
+ {id:"q9",t:"Circuits",type:"match",p:"Choose the job of each component.",items:["Cell","Wire","Switch","Lamp","Buzzer"],ch:["source of energy","conducts electricity","opens or closes the circuit","gives light","makes sound"],m:2},
+ {id:"q10",t:"Circuits",type:"match",svg:"symbols",p:"Name each circuit symbol.",items:["Symbol 1","Symbol 2","Symbol 3","Symbol 4"],ch:["cell","lamp","open switch","closed switch","buzzer"],m:2},
+ {id:"q11",t:"Circuits",type:"mc",svg:"mike",p:"Mike builds this circuit. Both lamps light up. What type of circuit is it?",o:["Series","Parallel"],m:1},
+ {id:"q12",t:"Circuits",type:"mc",svg:"mike",p:"Mike opens the switch. What happens?",o:["Both lamps go off because the circuit is broken.","Only one lamp goes off.","Both lamps get brighter.","Nothing changes."],m:1},
+ {id:"q13",t:"Circuits",type:"mc",svg:"mike",p:"One lamp in Mike's circuit breaks. What happens to the other lamp?",o:["It goes off too","It stays on","It gets brighter"],m:1},
+ {id:"q14",t:"Circuits",type:"mc",svg:"mike",p:"Mike adds a second cell to his circuit. What happens to the lamps?",o:["They get brighter","They get dimmer","They stay the same","They go off"],m:1},
+ {id:"q15",t:"Circuits",type:"multi",svg:"priya",p:"Priya opens only switch S2. Which lamps stay on? Choose all that are correct.",o:["A","B","C"],m:1},
+ {id:"q16",t:"Circuits",type:"mc",svg:"priya",p:"Now Priya closes S2 and opens only switch S1. Which lamps stay on?",o:["None of them","A and B","Only C","All of them"],m:1},
+ {id:"q17",t:"Circuits",type:"match",svg:"priya",p:"Count the symbols in Priya's circuit.",items:["Cells","Switches","Lamps"],ch:["1","2","3","4"],m:2},
+ {id:"q18",t:"Forces",type:"mc",p:"Lucas pushes a box to the right with 30 N. Friction is 10 N. Does the box move?",o:["Yes, to the right","Yes, to the left","No, it stays still"],m:1},
+ {id:"q19",t:"Forces",type:"match",svg:"forces",p:"Lucas is pushing the box to the right. Which arrow shows each force?",items:["Push","Friction","Gravity","Support from the floor"],ch:["A","B","C","D"],m:2},
+ {id:"q20",t:"Forces",type:"mc",p:"What unit do we use to measure force?",o:["Newtons (N)","Kilograms (kg)","Metres (m)","Litres (L)"],m:1},
+ {id:"q21",t:"Forces",type:"mc",p:"A football is resting on the grass. Why does it not move?",o:["Gravity pulls it down and the ground pushes it up equally: the forces are balanced.","There are no forces acting on it.","Only gravity is acting on it.","The ball is too heavy to move."],m:1},
+ {id:"q22",t:"Forces",type:"match",p:"Which force is it?",items:["A parachute falls slowly because of…","A boat floats because of…","An apple falls from a tree because of…","Our shoes grip the floor because of…"],ch:["gravity","friction","air resistance","upthrust"],m:2},
+ {id:"q23",t:"Forces",type:"mc",p:"Lina is riding her bicycle and uses the brakes. What happens?",o:["It slows down","It speeds up","It changes colour","Nothing"],m:1},
+ {id:"q24",t:"Forces",type:"mc",p:"You squash a ball of plasticine. The force changes its…",o:["Shape","Colour","Mass","Material"],m:1},
+ {id:"q25",t:"Solar System",type:"order",p:"Tap the planets in order, starting with the one closest to the Sun.",o:["Mercury","Venus","Earth","Mars","Jupiter","Saturn","Uranus","Neptune"],m:2},
+ {id:"q26",t:"Solar System",type:"mc",p:"How long does the Earth take to orbit the Sun once?",o:["About 365 days","24 hours","About 29 days","7 days"],m:1},
+ {id:"q27",t:"Solar System",type:"mc",p:"What causes day and night?",o:["The Earth spins on its axis.","The Earth orbits the Sun.","The Sun moves around the Earth.","The Moon blocks the Sun."],m:1},
+ {id:"q28",t:"Solar System",type:"mc",p:"The Moon looks bright at night. Is the Moon a light source?",o:["No, it reflects light from the Sun.","Yes, it makes its own light.","Yes, but only at night."],m:1},
+ {id:"q29",t:"Solar System",type:"mc",p:"About how long does the Moon take to go through all its phases?",o:["About 29 days","About 7 days","About 365 days","24 hours"],m:1},
+ {id:"q30",t:"Solar System",type:"match",p:"Complete the Moon phases in order: New Moon → ① → First Quarter → ② → Full Moon → ③ → Third Quarter → ④",items:["①","②","③","④"],ch:["Waxing crescent","Waxing gibbous","Waning gibbous","Waning crescent"],m:2},
+ {id:"q31",t:"Review",type:"match",p:"Which type of rock is it?",items:["Formed when magma or lava cools","Formed when layers of sediment are pressed together","Formed when rocks are changed by heat and pressure","Where we usually find fossils"],ch:["igneous","sedimentary","metamorphic"],m:2},
+ {id:"q32",t:"Review",type:"mc",p:"Food chain: grass → grasshopper → frog → snake. What is the original source of energy?",o:["The Sun","The grass","The soil","Water"],m:1},
+ {id:"q33",t:"Review",type:"mc",p:"A farmer sprays a toxic chemical on the grass. Which animal ends up with the most chemical in its body?",o:["The snake","The grasshopper","The frog","The grass"],m:1}
+];
+const TOTAL = Q.reduce((s,q)=>s+q.m,0);
+const KEY_ENC = "==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";
+const STORE = "sci5-term3-v1";
+
+function decodeKey(){
+  const b = atob(KEY_ENC.split("").reverse().join(""));
+  const bytes = Uint8Array.from(b, c=>c.charCodeAt(0));
+  return JSON.parse(new TextDecoder().decode(bytes));
+}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+
+let S = load() || fresh();
+function fresh(){
+  const ord={};
+  Q.forEach(q=>{ if(q.type==="mc"||q.type==="multi") ord[q.id]=shuffle(q.o); if(q.type==="order") ord[q.id]=shuffle(q.o); if(q.type==="match") ord[q.id]=shuffle(q.ch); });
+  return {screen:"start", name:"", i:0, ans:{}, ord, result:null};
+}
+function save(){ try{ localStorage.setItem(STORE, JSON.stringify(S)); }catch(e){} }
+function load(){ try{ const v=localStorage.getItem(STORE); return v?JSON.parse(v):null; }catch(e){ return null; } }
+
+function answered(q){
+  const a=S.ans[q.id];
+  if(a==null) return false;
+  if(q.type==="mc") return a!=="";
+  if(q.type==="number") return String(a).trim()!=="";
+  if(q.type==="multi") return a.length>0;
+  if(q.type==="order") return a.length===q.o.length;
+  if(q.type==="match") return q.items.every((_,k)=>a[k]);
+  return false;
+}
+
+const app = document.getElementById("app");
+function render(){
+  save();
+  if(S.screen==="start") return renderStart();
+  if(S.screen==="quiz") return renderQuiz();
+  if(S.screen==="result") return renderResult();
+}
+
+function renderStart(){
+  app.innerHTML = `
+  <h1>Science practice</h1>
+  <p class="hand" style="font-size:1.3rem;margin-bottom:14px">Grade 5 · Term III</p>
+  <div class="sheet">
+    <p>Light, circuits, forces, the Solar System and a short review. ${Q.length} questions, ${TOTAL} marks. It takes about 30 minutes.</p>
+    <p class="muted">Answer every question. You will see your score and the correct answers only at the end.</p>
+    <label for="nm" style="font-weight:700;display:block;margin:12px 0 6px">Your name</label>
+    <input id="nm" class="field" autocomplete="given-name" value="${esc(S.name)}" placeholder="Type your name">
+    <div class="nav"><button class="btn" id="go">Start the test</button></div>
+  </div>`;
+  const nm=document.getElementById("nm"), go=document.getElementById("go");
+  const upd=()=>{go.disabled=!nm.value.trim()}; upd();
+  nm.addEventListener("input",upd);
+  go.onclick=()=>{S.name=nm.value.trim(); S.screen="quiz"; render(); window.scrollTo(0,0);};
+}
+
+function renderQuiz(){
+  const q=Q[S.i], last=S.i===Q.length-1, done=Q.filter(answered).length;
+  app.innerHTML = `
+  <div class="topbar"><span class="qnum">Question ${S.i+1} of ${Q.length}</span><span class="topic">${q.t}</span></div>
+  <div class="progress" aria-hidden="true"><span style="width:${done/Q.length*100}%"></span></div>
+  <div class="sheet">
+    <p class="prompt">${esc(q.p)}</p>
+    ${q.svg?`<div class="fig">${SVG[q.svg]}</div>`:""}
+    <div id="ans"></div>
+    <p class="marks" style="margin-top:12px">[${q.m} mark${q.m>1?"s":""}]</p>
+  </div>
+  <div class="nav">
+    <button class="btn ghost" id="back" ${S.i===0?"disabled":""}>Back</button>
+    <button class="btn" id="next">${last?"Finish test":"Next"}</button>
+  </div>
+  <p style="text-align:center;margin-top:6px"><button class="linkbtn" id="all">See all questions (${done} of ${Q.length} answered)</button></p>
+  <div id="modal"></div>`;
+  renderAnswer(q, document.getElementById("ans"));
+  document.getElementById("back").onclick=()=>{S.i--; render(); window.scrollTo(0,0);};
+  document.getElementById("next").onclick=()=>{ if(last) confirmFinish(); else {S.i++; render(); window.scrollTo(0,0);} };
+  document.getElementById("all").onclick=showGrid;
+}
+
+function renderAnswer(q, el){
+  const a=S.ans[q.id];
+  if(q.type==="mc"||q.type==="multi"){
+    const multi=q.type==="multi";
+    el.innerHTML=`<div class="opts" role="${multi?"group":"radiogroup"}">${S.ord[q.id].map((o,k)=>{
+      const sel = multi ? (a||[]).includes(o) : a===o;
+      return `<label class="opt ${multi?"multi":""} ${sel?"sel":""}"><input type="${multi?"checkbox":"radio"}" name="o" data-v="${esc(o)}" ${sel?"checked":""}><span class="box"></span><span>${esc(o)}</span></label>`;}).join("")}</div>`;
+    el.querySelectorAll("input").forEach(inp=>inp.addEventListener("change",()=>{
+      const v=inp.dataset.v;
+      if(multi){ let cur=(S.ans[q.id]||[]).slice(); cur=inp.checked?[...cur,v]:cur.filter(x=>x!==v); S.ans[q.id]=cur; }
+      else S.ans[q.id]=v;
+      render();
+    }));
+  } else if(q.type==="number"){
+    el.innerHTML=`<label style="display:block;margin-bottom:6px">Answer in ${q.unit}</label><input class="field" id="num" inputmode="numeric" pattern="[0-9]*" value="${esc(a||"")}" placeholder="Type a number">`;
+    const n=el.querySelector("#num"); n.addEventListener("input",()=>{S.ans[q.id]=n.value.replace(/[^0-9.]/g,""); save();});
+  } else if(q.type==="match"){
+    const cur=a||{};
+    el.innerHTML=q.items.map((it,k)=>`<div class="row"><label for="s${k}">${esc(it)}</label><select class="field" id="s${k}" data-k="${k}"><option value="">Choose…</option>${S.ord[q.id].map(c=>`<option ${cur[k]===c?"selected":""}>${esc(c)}</option>`).join("")}</select></div>`).join("");
+    el.querySelectorAll("select").forEach(s=>s.addEventListener("change",()=>{ const c=Object.assign({},S.ans[q.id]||{}); c[s.dataset.k]=s.value; S.ans[q.id]=c; save(); }));
+  } else if(q.type==="order"){
+    const seq=a||[]; const pool=S.ord[q.id].filter(p=>!seq.includes(p));
+    el.innerHTML=`<div class="seq">${q.o.map((_,k)=>`<div class="slot"><b>${k+1}</b>${seq[k]?`<button data-r="${k}" aria-label="Remove ${esc(seq[k])}">${esc(seq[k])} ✕</button>`:`<span class="muted">…</span>`}</div>`).join("")}</div>
+    <div class="pool">${pool.map(p=>`<button class="chip" data-p="${esc(p)}">${esc(p)}</button>`).join("")}</div>
+    <p class="muted" style="font-size:.9rem">Tap a planet to add it. Tap a placed planet to remove it.</p>`;
+    el.querySelectorAll("[data-p]").forEach(b=>b.onclick=()=>{S.ans[q.id]=[...seq,b.dataset.p]; render();});
+    el.querySelectorAll("[data-r]").forEach(b=>b.onclick=()=>{const c=seq.slice(); c.splice(+b.dataset.r,1); S.ans[q.id]=c; render();});
+  }
+}
+
+function showGrid(){
+  const m=document.getElementById("modal");
+  m.innerHTML=`<div class="modal" id="mb"><div class="sheet" role="dialog" aria-label="All questions"><h2>All questions</h2><p class="muted">Filled = answered. Tap a number to go there.</p>
+  <div class="dots">${Q.map((q,k)=>`<button class="dot ${answered(q)?"done":""} ${k===S.i?"here":""}" data-k="${k}">${k+1}</button>`).join("")}</div>
+  <div class="nav"><button class="btn ghost" id="cl">Close</button><button class="btn" id="fin">Finish test</button></div></div></div>`;
+  m.querySelectorAll(".dot").forEach(d=>d.onclick=()=>{S.i=+d.dataset.k; render(); window.scrollTo(0,0);});
+  document.getElementById("cl").onclick=()=>m.innerHTML="";
+  document.getElementById("mb").addEventListener("click",e=>{if(e.target.id==="mb")m.innerHTML="";});
+  document.getElementById("fin").onclick=confirmFinish;
+}
+
+function confirmFinish(){
+  const empty=Q.filter(q=>!answered(q)).length;
+  const m=document.getElementById("modal");
+  m.innerHTML=`<div class="modal"><div class="sheet" role="dialog" aria-label="Finish the test"><h2>Finish the test?</h2>
+  <p>${empty?`You left <b>${empty}</b> question${empty>1?"s":""} without an answer. Empty questions get 0 marks.`:"You answered every question."}</p>
+  <p class="muted">After you finish, you can't change your answers.</p>
+  <div class="nav"><button class="btn ghost" id="cl">Keep working</button><button class="btn" id="ok">Finish and see my score</button></div></div></div>`;
+  document.getElementById("cl").onclick=()=>m.innerHTML="";
+  document.getElementById("ok").onclick=grade;
+}
+
+function grade(){
+  const K=decodeKey(); let total=0; const rows=[];
+  Q.forEach(q=>{
+    const a=S.ans[q.id], k=K[q.id].a; let got=0;
+    if(q.type==="mc") got = a===k ? 1 : 0;
+    else if(q.type==="number") got = a!=null && Number(a)===Number(k) ? 1 : 0;
+    else if(q.type==="multi"){ const s=(a||[]).slice().sort().join("|"); got = s===k.slice().sort().join("|") ? 1 : 0; }
+    else if(q.type==="match"){ const n=q.items.filter((_,i)=>(a||{})[i]===k[i]).length; got = n===q.items.length ? 2 : (n>=q.items.length/2 ? 1 : 0); }
+    else if(q.type==="order"){ const n=k.filter((p,i)=>(a||[])[i]===p).length; got = n===k.length ? 2 : (n>=6 ? 1 : 0); }
+    total+=got; rows.push({id:q.id,got});
+  });
+  S.result={total, rows, when:new Date().toISOString()};
+  S.screen="result"; render(); window.scrollTo(0,0);
+}
+
+function fmt(q,a){
+  if(a==null||a===""||(Array.isArray(a)&&!a.length)) return "<i>No answer</i>";
+  if(q.type==="match") return q.items.map((it,i)=>`${esc(it)} → ${esc((a||{})[i]||"—")}`).join("<br>");
+  if(q.type==="order"||q.type==="multi") return a.map(esc).join(", ");
+  if(q.type==="number") return esc(a)+"°";
+  return esc(a);
+}
+
+function renderResult(){
+  const R=S.result, pct=Math.round(R.total/TOTAL*100);
+  const levels=["I did it outstandingly!","I did it","I'm almost there","I'm not there yet"];
+  const lv = pct>=90?0 : pct>=70?1 : pct>=50?2 : 3;
+  const d=new Date(R.when);
+  app.innerHTML=`
+  <h1>Well done, ${esc(S.name)}!</h1>
+  <div class="sheet">
+    <p class="muted" style="margin:0">Your score · ${d.toLocaleDateString()}</p>
+    <div class="score">${R.total} / ${TOTAL}</div>
+    <p style="font-size:1.2rem;font-weight:700">${pct}%</p>
+    <ul class="ladder">${levels.map((l,i)=>`<li class="${i===lv?"on":""}">${l}</li>`).join("")}</ul>
+    <div class="nav"><button class="btn" id="rev">See the correct answers</button></div>
+  </div>
+  <div id="review"></div>
+  <p style="text-align:center;margin-top:20px"><button class="btn ghost" id="again">Try the test again</button></p>`;
+  document.getElementById("rev").onclick=()=>{
+    const K=decodeKey();
+    document.getElementById("review").innerHTML=`<h2 style="margin-top:22px">Correct answers</h2>`+Q.map((q,i)=>{
+      const got=R.rows[i].got, full=got===q.m, k=K[q.id];
+      const right = q.type==="match" ? q.items.map((it,j)=>`${esc(it)} → ${esc(k.a[j])}`).join("<br>") : (Array.isArray(k.a)?k.a.map(esc).join(", "):esc(k.a)+(q.type==="number"?"°":""));
+      return `<div class="rev ${full?"ok":"miss"}"><div class="head"><span>Question ${i+1} · ${q.t}</span><span class="got">${got}/${q.m}</span></div>
+      <p class="ans">${esc(q.p)}</p>
+      <div class="yours"><b>Your answer:</b><br>${fmt(q,S.ans[q.id])}</div>
+      ${full?"":`<div class="right"><b>Correct answer:</b><br>${right}</div>`}
+      <p class="why">${esc(k.e)}</p></div>`;}).join("");
+    document.getElementById("rev").closest(".nav").remove();
+    document.getElementById("review").scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
+  };
+  document.getElementById("again").onclick=()=>{ const n=S.name; S=fresh(); S.name=n; S.screen="quiz"; render(); window.scrollTo(0,0); };
+}
+
+render();
+</script>
+</body>
+</html>
